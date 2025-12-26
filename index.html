@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>MODE — Find Your Everyday Scent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6f6f6;
+      color: #111;
+      padding: 24px;
+      margin: 0;
+    }
+    .container {
+      max-width: 720px;
+      margin: auto;
+      background: #fff;
+      padding: 32px;
+      border-radius: 14px;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: #555;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .question {
+      margin-bottom: 26px;
+    }
+    .question h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 32px;
+      padding: 14px 24px;
+      font-size: 16px;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .result {
+      display: none;
+      margin-top: 40px;
+      line-height: 1.7;
+    }
+    .product {
+      margin-top: 20px;
+      padding: 16px;
+      background: #fafafa;
+      border-left: 3px solid #111;
+    }
+    .product a {
+      display: inline-block;
+      margin-top: 6px;
+      color: #111;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1>MODE — Find Your Everyday Scent</h1>
+  <p class="subtitle">
+    Setiap orang menjalani hari dengan caranya sendiri.  
+    Jawab beberapa pertanyaan singkat — MODE akan menemani caramu hadir.
+  </p>
+
+  <form id="modeForm">
+
+    <!-- USER INFO -->
+    <div class="question">
+      <h3>Nama</h3>
+      <input type="text" name="name" required>
+    </div>
+
+    <div class="question">
+      <h3>Email</h3>
+      <input type="email" name="email" required>
+    </div>
+
+    <div class="question">
+      <h3>No. HP <span style="color:#888">(opsional)</span></h3>
+      <input type="tel" name="phone">
+    </div>
+
+    <!-- QUESTIONS -->
+    <div class="question">
+      <h3>1. Saat berada di sekitar orang lain, kamu paling nyaman kalau wangimu…</h3>
+      <label><input type="radio" name="q1" value="calm" required> Hampir nggak terasa</label>
+      <label><input type="radio" name="q1" value="focused"> Terasa rapi & terjaga</label>
+      <label><input type="radio" name="q1" value="easy"> Terasa ringan & fresh</label>
+    </div>
+
+    <div class="question">
+      <h3>2. Hari yang ideal buat kamu biasanya terasa…</h3>
+      <label><input type="radio" name="q2" required> Tenang & terstruktur</label>
+      <label><input type="radio" name="q2"> Fokus & produktif</label>
+      <label><input type="radio" name="q2"> Santai & fleksibel</label>
+    </div>
+
+    <div class="question">
+      <h3>3. Kapan kamu paling ingin wangimu terasa “pas”?</h3>
+      <label><input type="radio" name="q3" required> Saat memulai aktivitas utama</label>
+      <label><input type="radio" name="q3"> Saat berpindah-pindah tempat</label>
+      <label><input type="radio" name="q3"> Keduanya sama penting</label>
+    </div>
+
+    <div class="question">
+      <h3>4. Parfum buat kamu paling membantu saat…</h3>
+      <label><input type="radio" name="q4" required> Menjaga kesan rapi & siap</label>
+      <label><input type="radio" name="q4"> Tetap nyaman di situasi ramai</label>
+    </div>
+
+    <div class="question">
+      <h3>5. Pilih kalimat yang paling kamu banget</h3>
+      <label><input type="radio" name="q5" required> Aku nyaman tanpa harus menonjol</label>
+      <label><input type="radio" name="q5"> Aku ingin terasa rapi dan siap</label>
+      <label><input type="radio" name="q5"> Aku ingin simpel dan nggak ribet</label>
+    </div>
+
+    <button type="submit">Lihat Hasil</button>
+  </form>
+
+  <!-- RESULT -->
+  <div id="result" class="result"></div>
+
+</div>
+
+<script>
+  const form = document.getElementById("modeForm");
+  const result = document.getElementById("result");
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const personality = form.q1.value;
+    let story = "", ngantor = "", krlan = "";
+
+    if (personality === "calm") {
+      story = `
+        Kamu hadir dengan tenang dan rapi.  
+        Kamu tidak merasa perlu menonjol untuk merasa utuh.  
+        Wangi yang cocok untuk kamu bersih, ringan, dan dekat di kulit.
+      `;
+      ngantor = "Clean · Airy · Soft Woody";
+      krlan = "Light · Clean · Crowd-safe";
+    }
+
+    if (personality === "focused") {
+      story = `
+        Kamu bergerak dengan arah yang jelas.  
+        Kamu nyaman saat semuanya terasa siap dan terkendali.  
+        Wangi yang cocok untuk kamu rapi dan stabil.
+      `;
+      ngantor = "Fresh · Clean Woody · Stabil";
+      krlan = "Clean · Light · Terkendali";
+    }
+
+    if (personality === "easy") {
+      story = `
+        Kamu menjalani hari dengan cara yang mengalir.  
+        Kamu tidak ingin ribet dengan hal-hal kecil.  
+        Wangi yang cocok untuk kamu fresh dan ringan.
+      `;
+      ngantor = "Fresh · Bersih · Santai";
+      krlan = "Fresh · Ringan · Crowd-safe";
+    }
+
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx76e9G-4ieleH7W2ldOxjY5lgug36IQo61XvXYXP8qGR6HPd71efnP--8U4H-MbJhjjA/exec";
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value || "",
+        personality,
+        ngantor,
+        krlan
+      })
+    });
+
+    result.innerHTML = `
+      <p>${story}</p>
+
+      <div class="product">
+        <strong>MODE — Ngantor</strong><br/>
+        ${ngantor}<br/>
+        <a href="https://marketplace.link/mode-ngantor" target="_blank">Beli MODE — Ngantor</a>
+      </div>
+
+      <div class="product">
+        <strong>MODE — KRLan</strong><br/>
+        ${krlan}<br/>
+        <a href="https://marketplace.link/mode-krlan" target="_blank">Beli MODE — KRLan</a>
+      </div>
+
+      <p style="margin-top:20px;">
+        MODE bukan tentang wangi yang paling terdengar,  
+        tapi wangi yang terasa pas.
+      </p>
+    `;
+
+    result.style.display = "block";
+    result.scrollIntoView({ behavior: "smooth" });
+  });
+</script>
+
+</body>
+</html>
