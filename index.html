@@ -1,234 +1,342 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>MODE — Find Your Everyday Scent</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<title>MODE — Personal Scent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f6f6f6;
-      color: #111;
-      padding: 24px;
-      margin: 0;
-    }
-    .container {
-      max-width: 720px;
-      margin: auto;
-      background: #fff;
-      padding: 32px;
-      border-radius: 14px;
-    }
-    h1 {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
-    .subtitle {
-      color: #555;
-      margin-bottom: 32px;
-      line-height: 1.6;
-    }
-    .question {
-      margin-bottom: 26px;
-    }
-    .question h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      cursor: pointer;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 32px;
-      padding: 14px 24px;
-      font-size: 16px;
-      background: #111;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .result {
-      display: none;
-      margin-top: 40px;
-      line-height: 1.7;
-    }
-    .product {
-      margin-top: 20px;
-      padding: 16px;
-      background: #fafafa;
-      border-left: 3px solid #111;
-    }
-    .product a {
-      display: inline-block;
-      margin-top: 6px;
-      color: #111;
-      text-decoration: underline;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont;
+  background:#efefef;
+  padding:32px;margin:0;
+}
+.container{
+  max-width:760px;margin:0 auto;
+  background:#fff;padding:44px;border-radius:22px;
+}
+h1{font-size:42px;margin:0 0 6px}
+.subtitle{color:#777;margin-bottom:44px}
+
+.question{margin-bottom:36px}
+.question h3{font-size:15px;font-weight:500;margin-bottom:14px}
+
+.form-input{
+  width:100%;padding:14px 16px;
+  border-radius:14px;border:1px solid #e6e6e6;
+  font-size:14px;
+}
+
+.option{
+  display:flex;gap:12px;
+  padding:14px 18px;
+  border:1px solid #e6e6e6;
+  border-radius:14px;
+  margin-bottom:12px;
+  cursor:pointer;
+}
+
+.option input{
+  appearance:none;
+  width:16px;height:16px;
+  border-radius:50%;
+  border:2px solid #bbb;
+  margin-top:2px;
+}
+.option input:checked{border-color:#111}
+.option input:checked::after{
+  content:"";display:block;
+  width:6px;height:6px;
+  background:#111;border-radius:50%;
+  margin:3px auto;
+}
+
+button{
+  margin-top:24px;
+  padding:16px 24px;
+  border:none;border-radius:14px;
+  background:#111;color:#fff;
+  font-size:15px;cursor:pointer;
+}
+
+.result{margin-top:64px;line-height:1.9}
+
+.intent-actions{
+  margin-top:48px;
+  display:flex;gap:12px;flex-wrap:wrap;
+}
+.intent-actions button{
+  flex:1;
+}
+.intent-actions .secondary{
+  background:#fff;color:#111;border:1px solid #111;
+}
+
+.actions{
+  margin-top:24px;
+  display:flex;gap:12px;flex-wrap:wrap;
+}
+.actions button{flex:1}
+
+canvas{
+  width:100%;
+  margin-top:36px;
+  border-radius:24px;
+  box-shadow:0 30px 70px rgba(0,0,0,.15);
+}
+
+.small{font-size:13px;color:#777}
+</style>
 </head>
 
 <body>
 <div class="container">
-  <h1>MODE — Find Your Everyday Scent</h1>
-  <p class="subtitle">
-    Setiap orang menjalani hari dengan caranya sendiri.  
-    Jawab beberapa pertanyaan singkat — MODE akan menemani caramu hadir.
-  </p>
+<h1>MODE</h1>
+<p class="subtitle">A personal scent, tuned to the way you move.</p>
 
-  <form id="modeForm">
+<form id="quiz">
 
-    <!-- USER INFO -->
-    <div class="question">
-      <h3>Nama</h3>
-      <input type="text" name="name" required>
-    </div>
+<div class="question">
+<h3>Nama</h3>
+<input class="form-input" name="name" required>
+</div>
 
-    <div class="question">
-      <h3>Email</h3>
-      <input type="email" name="email" required>
-    </div>
+<div class="question">
+<h3>Email</h3>
+<input class="form-input" type="email" name="email" required>
+</div>
 
-    <div class="question">
-      <h3>No. HP <span style="color:#888">(opsional)</span></h3>
-      <input type="tel" name="phone">
-    </div>
+<div class="question">
+<h3>No. HP <span class="small">(opsional)</span></h3>
+<input class="form-input" type="tel" name="phone">
+</div>
 
-    <!-- QUESTIONS -->
-    <div class="question">
-      <h3>1. Saat berada di sekitar orang lain, kamu paling nyaman kalau wangimu…</h3>
-      <label><input type="radio" name="q1" value="calm" required> Hampir nggak terasa</label>
-      <label><input type="radio" name="q1" value="focused"> Terasa rapi & terjaga</label>
-      <label><input type="radio" name="q1" value="easy"> Terasa ringan & fresh</label>
-    </div>
+<div class="question">
+<h3>Tanggal Lahir</h3>
+<input class="form-input" type="date" name="dob" required>
+</div>
 
-    <div class="question">
-      <h3>2. Hari yang ideal buat kamu biasanya terasa…</h3>
-      <label><input type="radio" name="q2" required> Tenang & terstruktur</label>
-      <label><input type="radio" name="q2"> Fokus & produktif</label>
-      <label><input type="radio" name="q2"> Santai & fleksibel</label>
-    </div>
+<div class="question">
+<h3>Di ruang publik, gue paling nyaman ketika…</h3>
+<label class="option"><input type="radio" name="q1" value="calm" required><span>Gue nggak terlalu kelihatan, tapi tetap terasa</span></label>
+<label class="option"><input type="radio" name="q1" value="focused"><span>Gue terlihat rapi dan siap</span></label>
+<label class="option"><input type="radio" name="q1" value="easy"><span>Gue bisa santai dan fleksibel</span></label>
+</div>
 
-    <div class="question">
-      <h3>3. Kapan kamu paling ingin wangimu terasa “pas”?</h3>
-      <label><input type="radio" name="q3" required> Saat memulai aktivitas utama</label>
-      <label><input type="radio" name="q3"> Saat berpindah-pindah tempat</label>
-      <label><input type="radio" name="q3"> Keduanya sama penting</label>
-    </div>
+<div class="question">
+<h3>Energi gue sehari-hari lebih ke…</h3>
+<label class="option"><input type="radio" name="q2" value="I" required><span>Tenang & reflektif</span></label>
+<label class="option"><input type="radio" name="q2" value="E"><span>Aktif & ekspresif</span></label>
+</div>
 
-    <div class="question">
-      <h3>4. Parfum buat kamu paling membantu saat…</h3>
-      <label><input type="radio" name="q4" required> Menjaga kesan rapi & siap</label>
-      <label><input type="radio" name="q4"> Tetap nyaman di situasi ramai</label>
-    </div>
+<div class="question">
+<h3>Kalau harus ambil keputusan…</h3>
+<label class="option"><input type="radio" name="q3" value="T" required><span>Gue pakai logika</span></label>
+<label class="option"><input type="radio" name="q3" value="F"><span>Gue pakai perasaan</span></label>
+</div>
 
-    <div class="question">
-      <h3>5. Pilih kalimat yang paling kamu banget</h3>
-      <label><input type="radio" name="q5" required> Aku nyaman tanpa harus menonjol</label>
-      <label><input type="radio" name="q5"> Aku ingin terasa rapi dan siap</label>
-      <label><input type="radio" name="q5"> Aku ingin simpel dan nggak ribet</label>
-    </div>
+<div class="question">
+<h3>Soal hidup dan rutinitas…</h3>
+<label class="option"><input type="radio" name="q4" value="J" required><span>Gue suka yang jelas dan teratur</span></label>
+<label class="option"><input type="radio" name="q4" value="P"><span>Gue lebih fleksibel</span></label>
+</div>
 
-    <button type="submit">Lihat Hasil</button>
-  </form>
+<button type="submit">Lihat Cerita Gue</button>
+</form>
 
-  <!-- RESULT -->
-  <div id="result" class="result"></div>
+<div id="result" class="result"></div>
 
+<canvas id="card" width="1080" height="1350"></canvas>
+
+<div class="actions">
+  <button onclick="downloadCard()">Download Card</button>
+  <button onclick="shareWhatsApp()">Share WhatsApp</button>
+  <button onclick="shareInstagram()">Share Instagram</button>
+</div>
+
+<div id="next-step"></div>
+
+<p class="small">
+Card ini dibuat khusus berdasarkan jawaban gue.  
+Boleh disimpan atau dibagikan.
+</p>
 </div>
 
 <script>
-  const form = document.getElementById("modeForm");
-  const result = document.getElementById("result");
+// ================= CONFIG =================
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz4UAJeEx7kfk3IvYTtP64QYOaNW2QPTjdPDxMdWJYgZ1JQFhwOfmsgPN2eJW2fAkkCag/exec";
 
-  form.addEventListener("submit", async function(e) {
-    e.preventDefault();
+// ================= STORY DATA =================
+const STORY_GUE = {
+  calm:[
+    "Gue bukan tipe yang suka terlalu menonjol.",
+    "Gue lebih nyaman hadir dengan cara yang tenang,",
+    "nggak berisik, tapi tetap terasa."
+  ],
+  focused:[
+    "Gue nyaman kalau semuanya terasa rapi.",
+    "Nggak perlu ramai,",
+    "yang penting jelas dan terjaga."
+  ],
+  easy:[
+    "Gue jalanin hari mengikuti ritmenya.",
+    "Nggak suka ribet,",
+    "yang penting ringan dan nyambung."
+  ]
+};
 
-    const personality = form.q1.value;
-    let story = "", ngantor = "", krlan = "";
+const AROMA_DESC = {
+  calm:"clean, soft woody yang nyatu di kulit",
+  focused:"fresh woody yang rapi dan profesional",
+  easy:"fresh ringan yang effortless"
+};
 
-    if (personality === "calm") {
-      story = `
-        Kamu hadir dengan tenang dan rapi.  
-        Kamu tidak merasa perlu menonjol untuk merasa utuh.  
-        Wangi yang cocok untuk kamu bersih, ringan, dan dekat di kulit.
-      `;
-      ngantor = "Clean · Airy · Soft Woody";
-      krlan = "Light · Clean · Crowd-safe";
-    }
+// ================= ZODIAC =================
+function getZodiac(d){
+  const m=d.getMonth()+1,day=d.getDate();
+  if((m==3&&day>=21)||(m==4&&day<=19))return"Aries";
+  if((m==4&&day>=20)||(m==5&&day<=20))return"Taurus";
+  if((m==5&&day>=21)||(m==6&&day<=20))return"Gemini";
+  if((m==6&&day>=21)||(m==7&&day<=22))return"Cancer";
+  if((m==7&&day>=23)||(m==8&&day<=22))return"Leo";
+  if((m==8&&day>=23)||(m==9&&day<=22))return"Virgo";
+  if((m==9&&day>=23)||(m==10&&day<=22))return"Libra";
+  if((m==10&&day>=23)||(m==11&&day<=21))return"Scorpio";
+  if((m==11&&day>=22)||(m==12&&day<=21))return"Sagittarius";
+  if((m==12&&day>=22)||(m==1&&day<=19))return"Capricorn";
+  if((m==1&&day>=20)||(m==2&&day<=18))return"Aquarius";
+  return"Pisces";
+}
 
-    if (personality === "focused") {
-      story = `
-        Kamu bergerak dengan arah yang jelas.  
-        Kamu nyaman saat semuanya terasa siap dan terkendali.  
-        Wangi yang cocok untuk kamu rapi dan stabil.
-      `;
-      ngantor = "Fresh · Clean Woody · Stabil";
-      krlan = "Clean · Light · Terkendali";
-    }
+let USER_DATA = {};
+let SHARE_TEXT = "";
 
-    if (personality === "easy") {
-      story = `
-        Kamu menjalani hari dengan cara yang mengalir.  
-        Kamu tidak ingin ribet dengan hal-hal kecil.  
-        Wangi yang cocok untuk kamu fresh dan ringan.
-      `;
-      ngantor = "Fresh · Bersih · Santai";
-      krlan = "Fresh · Ringan · Crowd-safe";
-    }
+const quiz = document.getElementById("quiz");
 
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx76e9G-4ieleH7W2ldOxjY5lgug36IQo61XvXYXP8qGR6HPd71efnP--8U4H-MbJhjjA/exec";
+quiz.addEventListener("submit",e=>{
+  e.preventDefault();
 
-    fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.name.value,
-        email: form.email.value,
-        phone: form.phone.value || "",
-        personality,
-        ngantor,
-        krlan
-      })
-    });
+  let s={calm:0,focused:0,easy:0,I:0,E:0,T:0,F:0,J:0,P:0};
+  ["q1","q2","q3","q4"].forEach(q=>s[quiz[q].value]++);
 
-    result.innerHTML = `
-      <p>${story}</p>
+  const personality=["calm","focused","easy"].reduce((a,b)=>s[a]>s[b]?a:b);
+  const mbti=(s.I>=s.E?"I":"E")+(s.T>=s.F?"T":"F")+(s.J>=s.P?"J":"P");
+  const zodiac=getZodiac(new Date(quiz.dob.value));
 
-      <div class="product">
-        <strong>MODE — Ngantor</strong><br/>
-        ${ngantor}<br/>
-        <a href="https://marketplace.link/mode-ngantor" target="_blank">Beli MODE — Ngantor</a>
-      </div>
+  const story=[
+    ...STORY_GUE[personality],
+    "",
+    `Sebagai ${mbti} dengan energi ${zodiac},`,
+    `gue cocok sama wangi ${AROMA_DESC[personality]} —`,
+    "dipakai dekat, nyatu, dan nggak berlebihan."
+  ];
 
-      <div class="product">
-        <strong>MODE — KRLan</strong><br/>
-        ${krlan}<br/>
-        <a href="https://marketplace.link/mode-krlan" target="_blank">Beli MODE — KRLan</a>
-      </div>
+  USER_DATA = {
+    name: quiz.name.value.trim(),
+    email: quiz.email.value,
+    phone: quiz.phone.value || "",
+    dob: quiz.dob.value,
+    zodiac,
+    mbti,
+    personality,
+    mode: personality === "easy" ? "KRLan" : "Ngantor"
+  };
 
-      <p style="margin-top:20px;">
-        MODE bukan tentang wangi yang paling terdengar,  
-        tapi wangi yang terasa pas.
-      </p>
-    `;
+  SHARE_TEXT =
+`${USER_DATA.name}
 
-    result.style.display = "block";
-    result.scrollIntoView({ behavior: "smooth" });
+${story.join("\n")}
+
+MODE
+A personal scent, tuned to the way gue bergerak.
+`;
+
+  document.getElementById("result").innerHTML = `
+    <p><strong>${USER_DATA.name}</strong></p>
+    <p>${story.join("<br>")}</p>
+  `;
+
+  drawCard(USER_DATA.name, mbti, zodiac, story);
+  setTimeout(downloadCard,800);
+
+  document.getElementById("next-step").innerHTML = `
+    <div class="intent-actions">
+      <button onclick="checkout()">Lanjut ke MODE yang cocok buat gue</button>
+      <button class="secondary" onclick="saveLater()">Simpan dulu, balik nanti</button>
+    </div>
+  `;
+
+  document.getElementById("result").scrollIntoView({behavior:"smooth"});
+});
+
+// ================= ACTION LOGGING =================
+function sendToSheet(action){
+  fetch(SHEET_API_URL,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      ...USER_DATA,
+      action
+    })
+  }).catch(()=>{});
+}
+
+function checkout(){
+  sendToSheet("checkout");
+  alert("Nice. Data kamu sudah masuk dan siap dieksekusi ke formula MODE.");
+}
+
+function saveLater(){
+  sendToSheet("save");
+  alert("Siap. Hasil kamu sudah tersimpan.");
+}
+
+// ================= CARD =================
+function drawCard(name,mbti,zodiac,story){
+  const ctx=card.getContext("2d");
+  ctx.fillStyle="#f5f5f5";
+  ctx.fillRect(0,0,1080,1350);
+
+  ctx.fillStyle="#111";
+  ctx.font="600 48px system-ui";
+  ctx.fillText(name,80,120);
+
+  ctx.font="300 24px system-ui";
+  ctx.fillText(`${mbti} · ${zodiac}`,80,160);
+
+  ctx.font="400 34px system-ui";
+  let y=300;
+  story.forEach(l=>{
+    ctx.fillText(l,80,y);
+    y+=48;
   });
-</script>
 
+  ctx.font="600 32px system-ui";
+  ctx.fillText("MODE",80,900);
+
+  ctx.font="300 24px system-ui";
+  ctx.fillText("A personal scent, tuned to the way gue bergerak.",80,940);
+
+  ctx.font="300 22px system-ui";
+  ctx.fillStyle="#666";
+  ctx.fillText(`Generated on ${new Date().toDateString()}`,80,1240);
+}
+
+function downloadCard(){
+  const a=document.createElement("a");
+  a.download="MODE-card.png";
+  a.href=card.toDataURL("image/png");
+  a.click();
+}
+
+function shareWhatsApp(){
+  window.open(`https://wa.me/?text=${encodeURIComponent(SHARE_TEXT)}`,"_blank");
+}
+
+function shareInstagram(){
+  alert("Card sudah ter-download.\n\nGunakan caption:\n\n"+SHARE_TEXT);
+}
+</script>
 </body>
 </html>
